@@ -2,6 +2,10 @@
 
 **Status: Entwurf vom 15.11.2026.** Diese Datei dokumentiert die Wünsche, überprüfte Referenzen und **vorgeschlagene** Level/Werte. Nichts in diesem Dokument ist schon als neue Mod implementiert oder spielgetestet.
 
+## Aktueller Quellenstand
+
+**Aktualisiert am 16.11.2026.** Die hochgeladene `CoolerPsycastsTweaks.zip` enthält neuere Änderungen als die zuvor genutzte v4-Dokumentation. Die zweite Referenz-ZIP enthält zudem eine überarbeitete Perfect-Skip-Implementierung. Einzelheiten und Migrations-/Teststatus stehen in **[Importierte Anpassungen](Importierte-Anpassungen.md)**. Die neuen ZIP-Werte ersetzen unten die veralteten Zahlen; sie sind **noch nicht als Teil der neuen Mod gebaut**.
+
 ## 1. Kernmechanik
 
 - **Royalty + RimWorld 1.6.** Der Psycaster kann Stufe 1 bis 10 erreichen.
@@ -106,12 +110,12 @@ Pro Zeile: **Vorschlagslevel**, Psycast, Rolle, bestehende Referenz und gewünsc
 |---|---|---|---|
 | Geschwindigkeit III | Buff | Neu / Dash | Bewegung ×2,5; Nah- und Fernkampftempo ×1,75 für 24 Stunden; sichtbare dauerhafte Aura. |
 | Deep Regeneration | Heilung | Deep Regeneration | Heilt schwere Verletzungen über längere Zeit; umfasst ausgewählte alte Verletzungen/Narben. |
-| Perfect Skip | Teleport | Perfect Skip | Teleportiert Pawns und möglichst viele Gegenstandstypen zielgenau, inklusive überprüfbarer Tragbarkeits-/Platzierungsregeln. |
+| Perfect Skip | Teleport | Perfect Skip | Neue Referenz-ZIP: drehbare Gebäude-Platzierungsvorschau (Q/E), zielgenaues Versetzen, Prüfung freien Platzes und Behandlung von Pflanzen/Monolith-Anbauten; **0,5 Psyfokus, 1 Tag Cooldown**. |
 | Skiprifle | Waffe | Skiprifle | Beschworene Psi-Fernkampfwaffe. |
 | Organ Skip | Heilung/Kampf | Organ Skip | Organmanipulation/Organtransfer gemäß Referenzfunktion; vor Umsetzung genaue Ziel- und Folgenlogik klären. |
 | Firestorm | Feuer | Firestorm | Großer, schadensstarker Flächen-Feuerangriff statt nur einzelner Brandstellen. |
 | Mass Reflect | Schutz | Mass Reflect | Schickt geeignete feindliche Geschosse im Bereich zu ihren Absendern zurück. |
-| Psychic Healing | Heilung | Psychic Healing | Repariert eine schwere chronische Erkrankung, dauerhafte Verletzung oder fehlendes Körperteil. |
+| Psychic Healing | Heilung | Psychic Healing | Repariert eine schwere chronische Erkrankung, dauerhafte Verletzung oder fehlendes Körperteil. Neue Referenz-ZIP: **100 Neuralhitze** statt 20; 80 % Psyfokus. |
 | Healing Bloom | Heilung | Healing Bloom | Große Heilungs-/Immunitäts-Aura für Verbündete in einem Gebiet; starke skalierbare Wirkung. |
 | Fertility Skip (?) | Offen | Fertility Skip (Referenz) | Der diktierte Name „Fatality Skip“ ist nicht im Referenzkatalog; vor Freigabe klären, ob Fertility Skip gemeint war. |
 
@@ -132,8 +136,8 @@ Pro Zeile: **Vorschlagslevel**, Psycast, Rolle, bestehende Referenz und gewünsc
 
 | Fähigkeit | Rolle | Bezug | Vorgesehene Funktion / Startwerte |
 |---|---|---|---|
-| Gamma Ray | Angriff | Bestehendes Tweaks-Projekt | Verstärkte Gammastrahlung aus deinem bestehenden Patch: 30 Schaden, normale Trefferverarbeitung mit 300 % Rüstungsdurchdringung (zu testen). |
-| Gravity Pulse | Kontrolle/Angriff | Bestehendes Tweaks-Projekt | Bestehende Zielwerte: Reichweite 40, Radius 10, Schaden 10, Zugdistanz 8, 300 % Durchdringung (zu testen). |
+| Gamma Ray | Angriff | Bestehendes Tweaks-Projekt | **Neuester ZIP-Stand:** 90 direkte Burn-Schadenspunkte mit eigenem DamageWorker. Die alte v4-Angabe 30 Schaden / 300 % AP ist überholt. C#-Port und Verträglichkeit mit Rüstungsmods prüfen. |
+| Gravity Pulse | Kontrolle/Angriff | Bestehendes Tweaks-Projekt | **Neuester ZIP-Stand:** Cast-Reichweite 40, Radius 14, Zugdistanz 14, **3 × 30 Schaden** mit 1000 % AP; 180 Ticks Stun, sichtbar pulsierende Gravitation, fließender Einzug. Eigene v8-C#-Klasse erforderlich. |
 | Reverse Gravity | Kontrolle/Angriff | Bestehendes Tweaks-Projekt | Kurz hochschleudern und nach Fall Schlag-/Fallschaden; Radius 6, normale Trefferverarbeitung (zu testen). |
 | Entropic Focus | Psyfokus | Bestehendes Tweaks-Projekt | Psyfokus von 0 auf 100 % in 4 Spielstunden bei ununterbrochener Wirkung; erzeugt kontrollierte Neuralhitze. |
 | Multicast | Metamagie | Multicast | Einen kompatiblen Psycast gleichzeitig auf mehrere Pawns der Zielgruppe anwenden. |
@@ -190,8 +194,8 @@ Pro Zeile: **Vorschlagslevel**, Psycast, Rolle, bestehende Referenz und gewünsc
 6. **Schilde:** eigene Treffererkennung je Kategorie (Projektile, Nahkampf, explosiv, Psycast), Ausnahmen und Friendly Fire sauber regeln. Psycast-Immunität ist keine einfache XML-Stat.
 7. **Reverse Time:** bestehende Nutzerimplementierung löscht **auch gute** Hediffs, Bionik, Psylink und Mechlink. Das ist absichtlich **kein** reiner Heilzauber. Die Arbeit an dieser Fähigkeit braucht ausdrücklich Save-/Restore-Tests.
 8. **Unmake:** historische tatsächlich verbrauchte Rezeptzutaten sind im fertigen Item normalerweise nicht vollständig gespeichert. Bestehende Nutzerimplementierung liefert möglichst rekonstruierte Rezeptkosten; bei austauschbaren Zutaten ist ein exaktes historisches Zurückgeben nicht nachweisbar.
-9. **Mind Control:** bestehenden, 12 Stunden dauernden Fraktionswechsel aus dem Nutzermod als Ausgangspunkt analysieren. Quest-Pawns, Gefangene, Mechs, Fraktionsbeziehungen und Aftereffects testen.
-10. **Bestehende Tweaks:** im Repo [Cooler-Psycasts-Tweaks](https://github.com/PhillipFrei/Cooler-Psycasts-Tweaks), speziell [v4-Implementierung](https://github.com/PhillipFrei/Cooler-Psycasts-Tweaks/blob/main/docs/v4-Implementierung.md), sind Learn, Gamma Ray, Gravity Pulse, Reverse Gravity, Reverse Time, Unmake, Ease Gravity, Entropic Focus, Embed Psycast und Mind Control bereits als Referenz beschrieben. Ihre Laufzeitwirkung ist nicht allein durch das Dokument bestätigt.
+9. **Mind Control:** bestehenden 12-Stunden-Fraktionswechsel aus der neueren ZIP als Ausgangspunkt analysieren; dort ist Mind Control **Level 6** und hat **16 Tage Cooldown**, im neuen Mod wird es **Level 9**. Quest-Pawns, Gefangene, Mechs, Fraktionsbeziehungen und Aftereffects testen.
+10. **Bestehende Tweaks:** im Repo [Cooler-Psycasts-Tweaks](https://github.com/PhillipFrei/Cooler-Psycasts-Tweaks) steht älterer v4-Quellcode. **Neuere Werte und neue DLL-Klassen stammen aus dem hochgeladenen Add-on-ZIP** und sind in [Importierte Anpassungen](Importierte-Anpassungen.md) dokumentiert. Darin fehlen die C#-Quelldateien der neueren Version; Änderungen nicht blind aus v4 übernehmen.
 11. **Rechte und Wartbarkeit:** keine ungeprüft fremden Assemblies, Grafiken oder C#-Quelldateien direkt in dieses öffentliche Repository hochladen. Nachimplementierung / erlaubte Nutzung klären. Eigene IDs/Namensräume und optionale Kompatibilitätspatches verwenden.
 
 ## 6. Architektur und Reihenfolge
