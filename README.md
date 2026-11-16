@@ -16,6 +16,8 @@ Konzept für eine eigenständige RimWorld-1.6-Psycaster-Mod mit frei wählbaren 
 
 **[Vollständiger geplanter Zauberkatalog und Mechanik](docs/Zauberplanung.md)**
 
+**[Analyse der bereits vorhandenen Änderungen aus den neuen ZIP-Archiven](docs/Importierte-Anpassungen.md)**: neuere Werte für Gamma Ray, Gravity Pulse, Reverse Gravity, Perfect Skip, Psychic Healing, Learn, Timeshunt, Mind Control u. a. Der Nutzer hat mitgeteilt, dass einige Änderungen getestet wurden; konkrete Testprotokolle sind nicht enthalten.
+
 Die Liste ist ein **Entwurf**. Zahlen in der Planung sind Zielwerte, keine bereits implementierten oder getesteten Funktionen.
 
 ## Technische Leitlinien
